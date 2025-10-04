@@ -19,7 +19,7 @@ public class Disciplina {
     private String nome;
 
     @NotBlank
-    private int codigo;
+    private String codigo;
 
     @ManyToOne
     @JoinColumn(name="curso_id")
@@ -38,7 +38,7 @@ public class Disciplina {
     public Disciplina() {
     }
 
-    public Disciplina(String nome, int codigo, Curso curso, List<Professor> professores, List<Aluno> alunos) {
+    public Disciplina(String nome, String codigo, Curso curso, List<Professor> professores, List<Aluno> alunos) {
         this.nome = nome;
         this.codigo = codigo;
         this.curso = curso;
@@ -62,11 +62,11 @@ public class Disciplina {
         this.nome = nome;
     }
 
-    public int getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
