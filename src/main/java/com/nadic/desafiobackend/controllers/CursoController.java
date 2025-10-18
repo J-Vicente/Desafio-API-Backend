@@ -6,6 +6,7 @@ import com.nadic.desafiobackend.dtos.response.ApiResponseDto;
 import com.nadic.desafiobackend.services.CursoService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,15 +29,16 @@ public class CursoController {
     @Autowired
     private CursoService cursoService;
 
-    @Operation(summary ="",
-            description = "")
+    @Operation(description ="Retorna uma lista de dtos de todos os cursos, mostrando o Id, nome e código. " +
+            "Caso receba uma query, que deve ser uma string, " +
+            "buscará correspondencias dentre os nomes dos cursos.",
+            summary = "Lista todos os cursos")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "", description = ""),
-            @ApiResponse(responseCode = "", description = "",
-                    content =  @Content(schema = @Schema(implementation = ApiResponseDto.class))),
+            @ApiResponse(responseCode = "200", description = "Sucesso, Lista retornada com sucesso"),
     })
     @GetMapping
     public ResponseEntity<ApiResponseDto<List<CursoDto>>> getCursos(
+            @Parameter(description = "Nome ou parte do nome do curso a ser buscado")
             @RequestParam(value = "nome", required = false) String nome) {
 
         List<CursoDto> cursos;
@@ -56,12 +58,12 @@ public class CursoController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary ="",
-            description = "")
+    @Operation(summary ="Cadastra um novo curso",
+            description = "Recebe um dto com nome e código, " +
+                    "caso todos campos sejam válidos criará um novo curso.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "", description = ""),
-            @ApiResponse(responseCode = "", description = "",
-                    content =  @Content(schema = @Schema(implementation = ApiResponseDto.class))),
+            @ApiResponse(responseCode = "201", description = "Sucesso, Curso criado com sucesso"),
+            @ApiResponse(responseCode = "409", description = "Conflito, campo que deveria ser único duplicado"),
     })
     @PostMapping
     public ResponseEntity<ApiResponseDto<Void>> createCurso(@Valid @RequestBody NewCursoDto dto) {
@@ -74,15 +76,16 @@ public class CursoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @Operation(summary ="",
-            description = "")
+    @Operation(summary ="Retorna um curso específicado por Id",
+            description = "Recebe um Long Id e busca se há algum curso correspondente,"+
+                    "caso tenha retorna um dto com todas as informações desse curso.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "", description = ""),
-            @ApiResponse(responseCode = "", description = "",
-                    content =  @Content(schema = @Schema(implementation = ApiResponseDto.class))),
+            @ApiResponse(responseCode = "200", description = "Sucesso, curso encontrado com sucesso"),
+
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<CursoDto>> getCursoById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<CursoDto>> getCursoById(@Parameter(description = "Id do curso a ser buscado")
+                                                                     @PathVariable Long id) {
         CursoDto curso = cursoService.findById(id);
 
         ApiResponseDto<CursoDto> response = new ApiResponseDto<>();
@@ -93,15 +96,18 @@ public class CursoController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary ="",
-            description = "")
+    @Operation(summary ="Altera as informações de um curso indicado",
+            description = "Recebe um Long Id para identificar o curso a ser alterado, " +
+                    "caso encontre recebe dto com os campos a serem alterados, " +
+                    "é possível alterar todos ou apenas os desejados.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "", description = ""),
-            @ApiResponse(responseCode = "", description = "",
+            @ApiResponse(responseCode = "201", description = "Sucesso, curso cadastrado com sucesso"),
+            @ApiResponse(responseCode = "409", description = "Conflito, campo que deve ser único duplicado",
                     content =  @Content(schema = @Schema(implementation = ApiResponseDto.class))),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<CursoDto>> updateCurso(@PathVariable Long id,
+    public ResponseEntity<ApiResponseDto<CursoDto>> updateCurso(@Parameter(description = "Id do curso a ser atualizado")
+                                                                    @PathVariable Long id,
                                                                 @Valid @RequestBody NewCursoDto dto) {
 
         CursoDto curso = cursoService.update(id, dto);
@@ -114,15 +120,14 @@ public class CursoController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary ="",
-            description = "")
+    @Operation(summary ="Exclui um curso indicado",
+            description = "Recebe um Long Id e caso encontre o curso específicado deleta ele.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "", description = ""),
-            @ApiResponse(responseCode = "", description = "",
-                    content =  @Content(schema = @Schema(implementation = ApiResponseDto.class))),
+            @ApiResponse(responseCode = "200", description = "Sucesso, curso deletado com sucesso"),
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<Void>> deleteCurso(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<Void>> deleteCurso(@Parameter(description = "Id do curso a ser excluído")
+                                                                @PathVariable Long id) {
         cursoService.delete(id);
 
         ApiResponseDto<Void> response = new ApiResponseDto<>();

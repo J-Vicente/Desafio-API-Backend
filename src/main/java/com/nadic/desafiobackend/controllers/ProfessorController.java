@@ -28,11 +28,11 @@ public class ProfessorController {
     @Autowired
     private ProfessorService professorService;
 
-    @Operation(summary ="Lista todos os alunos",
+    @Operation(summary ="Lista todos os professores",
             description = "Retorna uma lista de dtos de todos os professoress, mostrando o Id, nome e matrícula." +
                     "Caso seja passado o parametro de disciplina, retornará apenas os professoress daquela disciplina." +
                     "Caso receba uma query, que deve ser uma string, " +
-                    "buscará correspondencias dentre os nomes de professores")
+                    "buscará correspondencias dentre os nomes de professores.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sucesso, Lista retornnada com sucesso"),
     })
@@ -63,7 +63,7 @@ public class ProfessorController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary ="Cadastrar novo professor",
+    @Operation(summary ="Cadastra um novo professor",
             description = "Recebe um dto com nome e matricula, " +
                     "caso todos campos sejam válidos criará um novo professor.")
     @ApiResponses(value = {
