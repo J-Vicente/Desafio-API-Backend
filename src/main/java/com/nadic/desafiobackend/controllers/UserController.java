@@ -1,7 +1,7 @@
 package com.nadic.desafiobackend.controllers;
 
 import com.nadic.desafiobackend.dtos.auth.UserDto;
-import com.nadic.desafiobackend.dtos.response.ApiResponse;
+import com.nadic.desafiobackend.dtos.response.ApiResponseDto;
 import com.nadic.desafiobackend.services.UserService;
 
 import jakarta.validation.Valid;
@@ -24,10 +24,10 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/registration")
-    public ResponseEntity<ApiResponse<Void>> register(@Valid @RequestBody UserDto dto) {
+    public ResponseEntity<ApiResponseDto<Void>> register(@Valid @RequestBody UserDto dto) {
         userService.register(dto);
 
-        ApiResponse<Void> response = new ApiResponse<>();
+        ApiResponseDto<Void> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setData(null);
         response.setMessage("Usuário criado com sucesso");

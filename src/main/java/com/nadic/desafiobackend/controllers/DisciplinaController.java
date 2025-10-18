@@ -3,7 +3,7 @@ package com.nadic.desafiobackend.controllers;
 import com.nadic.desafiobackend.dtos.disciplina.DisciplinaAllDto;
 import com.nadic.desafiobackend.dtos.disciplina.DisciplinaDto;
 import com.nadic.desafiobackend.dtos.disciplina.NewDisciplinaDto;
-import com.nadic.desafiobackend.dtos.response.ApiResponse;
+import com.nadic.desafiobackend.dtos.response.ApiResponseDto;
 import com.nadic.desafiobackend.services.DisciplinaService;
 
 import jakarta.validation.Valid;
@@ -21,7 +21,7 @@ public class DisciplinaController {
     private DisciplinaService disciplinaService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<DisciplinaAllDto>>> getDisciplinas(
+    public ResponseEntity<ApiResponseDto<List<DisciplinaAllDto>>> getDisciplinas(
             @RequestParam(value = "curso", required = false) Long cursoId) {
 
         List<DisciplinaAllDto> disciplinas;
@@ -33,7 +33,7 @@ public class DisciplinaController {
             disciplinas = disciplinaService.findAll();
         }
 
-        ApiResponse<List<DisciplinaAllDto>> response = new ApiResponse<>();
+        ApiResponseDto<List<DisciplinaAllDto>> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setMessage("Requisição completada com sucesso");
         response.setData(disciplinas);
@@ -42,10 +42,10 @@ public class DisciplinaController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> createDisciplina(@Valid @RequestBody NewDisciplinaDto dto) {
+    public ResponseEntity<ApiResponseDto<Void>> createDisciplina(@Valid @RequestBody NewDisciplinaDto dto) {
         disciplinaService.create(dto);
 
-        ApiResponse<Void> response = new ApiResponse<>();
+        ApiResponseDto<Void> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setMessage("Disciplina criada com sucesso");
 
@@ -53,10 +53,10 @@ public class DisciplinaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<DisciplinaDto>> getDisciplinaById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<DisciplinaDto>> getDisciplinaById(@PathVariable Long id) {
         DisciplinaDto disciplina = disciplinaService.findById(id);
 
-        ApiResponse<DisciplinaDto> response = new ApiResponse<>();
+        ApiResponseDto<DisciplinaDto> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setData(disciplina);
         response.setMessage("Requisição completada com sucesso");
@@ -65,11 +65,11 @@ public class DisciplinaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<DisciplinaDto>> updateDisciplina(@PathVariable Long id,
-                                                                       @Valid @RequestBody NewDisciplinaDto dto) {
+    public ResponseEntity<ApiResponseDto<DisciplinaDto>> updateDisciplina(@PathVariable Long id,
+                                                                          @Valid @RequestBody NewDisciplinaDto dto) {
         DisciplinaDto disciplina = disciplinaService.update(id, dto);
 
-        ApiResponse<DisciplinaDto> response = new ApiResponse<>();
+        ApiResponseDto<DisciplinaDto> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setMessage("Disciplina atualizada com sucesso");
         response.setData(disciplina);
@@ -78,10 +78,10 @@ public class DisciplinaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteDisciplina(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<Void>> deleteDisciplina(@PathVariable Long id) {
         disciplinaService.delete(id);
 
-        ApiResponse<Void> response = new ApiResponse<>();
+        ApiResponseDto<Void> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setMessage("Disciplina removida com sucesso");
 

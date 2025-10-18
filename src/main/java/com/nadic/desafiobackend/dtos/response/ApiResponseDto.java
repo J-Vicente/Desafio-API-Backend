@@ -1,14 +1,14 @@
 package com.nadic.desafiobackend.dtos.response;
 
-public class ApiResponse<T> {
+public class ApiResponseDto<T> {
         private String status;
         private T data;
         private String message;
 
-        public ApiResponse() {
+        public ApiResponseDto() {
         }
 
-        public ApiResponse(String status, T data, String message) {
+        public ApiResponseDto(String status, T data, String message) {
             this.status = status;
             this.data = data;
             this.message = message;

@@ -2,7 +2,7 @@ package com.nadic.desafiobackend.controllers;
 
 import com.nadic.desafiobackend.dtos.curso.CursoDto;
 import com.nadic.desafiobackend.dtos.curso.NewCursoDto;
-import com.nadic.desafiobackend.dtos.response.ApiResponse;
+import com.nadic.desafiobackend.dtos.response.ApiResponseDto;
 import com.nadic.desafiobackend.services.CursoService;
 
 import jakarta.validation.Valid;
@@ -20,7 +20,7 @@ public class CursoController {
     private CursoService cursoService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<CursoDto>>> getCursos(
+    public ResponseEntity<ApiResponseDto<List<CursoDto>>> getCursos(
             @RequestParam(value = "nome", required = false) String nome) {
 
         List<CursoDto> cursos;
@@ -32,7 +32,7 @@ public class CursoController {
             cursos = cursoService.findAll();
         }
 
-        ApiResponse<List<CursoDto>> response = new ApiResponse<>();
+        ApiResponseDto<List<CursoDto>> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setMessage("Requisição completada com sucesso");
         response.setData(cursos);
@@ -41,10 +41,10 @@ public class CursoController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> createCurso(@Valid @RequestBody NewCursoDto dto) {
+    public ResponseEntity<ApiResponseDto<Void>> createCurso(@Valid @RequestBody NewCursoDto dto) {
         cursoService.create(dto);
 
-        ApiResponse<Void> response = new ApiResponse<>();
+        ApiResponseDto<Void> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setMessage("Curso criada com sucesso");
 
@@ -52,10 +52,10 @@ public class CursoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<CursoDto>> getCursoById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<CursoDto>> getCursoById(@PathVariable Long id) {
         CursoDto curso = cursoService.findById(id);
 
-        ApiResponse<CursoDto> response = new ApiResponse<>();
+        ApiResponseDto<CursoDto> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setData(curso);
         response.setMessage("Requisição completada com sucesso");
@@ -64,12 +64,12 @@ public class CursoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<CursoDto>> updateCurso(@PathVariable Long id,
-                                                             @Valid @RequestBody NewCursoDto dto) {
+    public ResponseEntity<ApiResponseDto<CursoDto>> updateCurso(@PathVariable Long id,
+                                                                @Valid @RequestBody NewCursoDto dto) {
 
         CursoDto curso = cursoService.update(id, dto);
 
-        ApiResponse<CursoDto> response = new ApiResponse<>();
+        ApiResponseDto<CursoDto> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setMessage("Curso atualizado com sucesso");
         response.setData(curso);
@@ -78,10 +78,10 @@ public class CursoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteCurso(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<Void>> deleteCurso(@PathVariable Long id) {
         cursoService.delete(id);
 
-        ApiResponse<Void> response = new ApiResponse<>();
+        ApiResponseDto<Void> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setMessage("Curso removido com sucesso");
 

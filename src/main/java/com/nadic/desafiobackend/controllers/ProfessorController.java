@@ -2,7 +2,7 @@ package com.nadic.desafiobackend.controllers;
 
 import com.nadic.desafiobackend.dtos.professor.NewProfessorDto;
 import com.nadic.desafiobackend.dtos.professor.ProfessorDto;
-import com.nadic.desafiobackend.dtos.response.ApiResponse;
+import com.nadic.desafiobackend.dtos.response.ApiResponseDto;
 import com.nadic.desafiobackend.services.ProfessorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class ProfessorController {
     private ProfessorService professorService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProfessorDto>>> getProfessores(
+    public ResponseEntity<ApiResponseDto<List<ProfessorDto>>> getProfessores(
             @RequestParam(value = "disciplina", required = false) Long disciplinaId,
             @RequestParam(value = "nome", required = false) String nome) {
 
@@ -35,7 +35,7 @@ public class ProfessorController {
             professores = professorService.findAll();
         }
 
-        ApiResponse<List<ProfessorDto>> response = new ApiResponse<>();
+        ApiResponseDto<List<ProfessorDto>> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setMessage("Requisição completada com sucesso");
         response.setData(professores);
@@ -44,10 +44,10 @@ public class ProfessorController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> createProfesor(@Valid @RequestBody NewProfessorDto dto) {
+    public ResponseEntity<ApiResponseDto<Void>> createProfesor(@Valid @RequestBody NewProfessorDto dto) {
         professorService.create(dto);
 
-        ApiResponse<Void> response = new ApiResponse<>();
+        ApiResponseDto<Void> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setMessage("Professor criada com sucesso");
 
@@ -55,10 +55,10 @@ public class ProfessorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<ProfessorDto>> getProfessorById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<ProfessorDto>> getProfessorById(@PathVariable Long id) {
         ProfessorDto professor = professorService.findById(id);
 
-        ApiResponse<ProfessorDto> response = new ApiResponse<>();
+        ApiResponseDto<ProfessorDto> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setData(professor);
         response.setMessage("Requisição completada com sucesso");
@@ -67,12 +67,12 @@ public class ProfessorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<ProfessorDto>> updateProfessor(@PathVariable Long id,
-                                                             @Valid @RequestBody NewProfessorDto dto) {
+    public ResponseEntity<ApiResponseDto<ProfessorDto>> updateProfessor(@PathVariable Long id,
+                                                                        @Valid @RequestBody NewProfessorDto dto) {
 
         ProfessorDto professor = professorService.update(id, dto);
 
-        ApiResponse<ProfessorDto> response = new ApiResponse<>();
+        ApiResponseDto<ProfessorDto> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setMessage("Professor atualizado com sucesso");
         response.setData(professor);
@@ -81,10 +81,10 @@ public class ProfessorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteProfessor(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<Void>> deleteProfessor(@PathVariable Long id) {
         professorService.delete(id);
 
-        ApiResponse<Void> response = new ApiResponse<>();
+        ApiResponseDto<Void> response = new ApiResponseDto<>();
         response.setStatus("success");
         response.setMessage("Professor removido com sucesso");
 
