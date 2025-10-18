@@ -33,7 +33,7 @@ public class AlunoController {
             description = "Retorna uma lista de dtos de todos os alunos, mostrando o Id, nome, matrícula, e curso. " +
                     "Caso seja passado o parametro de cursoId retornará apenas os alunos daquele curso.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Sucesso, Lista retornada"),
+            @ApiResponse(responseCode = "200", description = "Sucesso, lista retornada"),
     })
     @GetMapping
     public ResponseEntity<ApiResponseDto<List<AlunosAllDto>>> getAlunos(
@@ -93,9 +93,9 @@ public class AlunoController {
     }
 
     @Operation(summary ="Altera as informações de um aluno.",
-            description = "Recebe um Long Id para identificar o aluno a ser alterado, " +
-                    "caso encontre recebe dto com os campos a serem alterados, " +
-                    "é possível alterar todos ou apenas os desejados.")
+                description = "Recebe um Long Id para identificar o aluno a ser alterado, " +
+                        "caso encontre recebe dto com os campos a serem alterados, " +
+                        "é possível alterar todos ou apenas os desejados.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Sucesso, Aluno atualizado com sucesso"),
             @ApiResponse(responseCode = "409", description = "Conflito, Campo que deve ser único duplicado",
