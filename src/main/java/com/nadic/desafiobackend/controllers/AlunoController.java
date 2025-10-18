@@ -102,7 +102,8 @@ public class AlunoController {
             content =  @Content(schema = @Schema(implementation = ApiResponseDto.class))),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<AlunoDto>> updateAluno(@PathVariable Long id,
+    public ResponseEntity<ApiResponseDto<AlunoDto>> updateAluno(@Parameter(description = "Id do aluno a ser atualizado")
+                                                                    @PathVariable Long id,
                                                                 @Valid @RequestBody NewAlunoDto dto) {
 
         AlunoDto aluno = alunoService.update(id, dto);
@@ -121,7 +122,8 @@ public class AlunoController {
             @ApiResponse(responseCode = "200", description = "Sucesso, Aluno deletado com sucesso"),
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<Void>> deleteAluno(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<Void>> deleteAluno(@Parameter(description = "Id do aluno a ser deletado")
+                                                                @PathVariable Long id) {
         alunoService.delete(id);
 
         ApiResponseDto<Void> response = new ApiResponseDto<>();
@@ -141,6 +143,7 @@ public class AlunoController {
     })
     @GetMapping("/search")
     public ResponseEntity<ApiResponseDto<List<AlunosAllDto>>> searchAlunos(
+            @Parameter(description = "Nome ou matricula a ser buscado")
             @RequestParam("q") String query) {
 
         List<AlunosAllDto> alunos = alunoService.search(query);
