@@ -22,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/alunos")
-@Tag(name="Alunos", description="Endpoints para gerenciamento de alunos")
+@Tag(name="Alunos", description="Endpoints para gerenciamento de alunos.")
 @Order(2)
 public class AlunoController {
 
