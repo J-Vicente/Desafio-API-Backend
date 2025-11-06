@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -12,6 +14,8 @@ import java.util.List;
         uniqueConstraints = {
         @UniqueConstraint(columnNames = {"matricula"})
     })
+@Data
+@NoArgsConstructor
 public class Aluno {
 
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -34,53 +38,4 @@ public class Aluno {
     )
     private List<Disciplina> disciplinas;
 
-    public Aluno(){
-    }
-
-    public Aluno(String nome, int matricula, Curso curso, List<Disciplina> disciplinas) {
-         this.nome =  nome;
-         this.matricula = matricula;
-         this.curso = curso;
-         this.disciplinas = disciplinas;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public int getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(int matricula) {
-        this.matricula = matricula;
-    }
-
-    public Curso getCurso() {
-        return curso;
-    }
-
-    public void setCurso(Curso curso) {
-        this.curso = curso;
-    }
-
-    public List<Disciplina> getDisciplinas() {
-        return disciplinas;
-    }
-
-    public void setDisciplinas(List<Disciplina> disciplinas) {
-        this.disciplinas = disciplinas;
-    }
 }

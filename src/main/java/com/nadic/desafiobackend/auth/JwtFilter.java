@@ -43,10 +43,10 @@ public class JwtFilter extends OncePerRequestFilter {
                         User user = userRepository.findByUsername(username).orElse(null);
 
                         if (user != null && jwtUtil.validateToken(token, new org.springframework.security.core.userdetails.User(
-                                user.getName(), user.getPassword(), new ArrayList<>()
+                                user.getUsername(), user.getPassword(), new ArrayList<>()
                         ))) {
                             UsernamePasswordAuthenticationToken authToken =
-                                    new UsernamePasswordAuthenticationToken(user.getName(), null, new ArrayList<>());
+                                    new UsernamePasswordAuthenticationToken(user.getUsername(), null, new ArrayList<>());
                             SecurityContextHolder.getContext().setAuthentication(authToken);
                         }
                     }

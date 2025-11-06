@@ -4,12 +4,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="tb_professores",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"matricula"})
         })
+@Data
+@NoArgsConstructor
 public class Professor {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -21,35 +25,4 @@ public class Professor {
     @NotNull @Positive
     private Integer matricula;
 
-    public Professor() {
-    }
-
-    public Professor(String nome, int matricula) {
-        this.nome = nome;
-        this.matricula = matricula;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public int getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(int matricula) {
-        this.matricula = matricula;
-    }
 }
