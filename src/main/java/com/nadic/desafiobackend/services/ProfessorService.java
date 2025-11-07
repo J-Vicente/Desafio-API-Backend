@@ -67,7 +67,7 @@ public class ProfessorService {
         Professor professor = professorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
 
-        List<Disciplina> disciplinas = disciplinaRepository.findAllByProfessores_Id(id);
+        List<Disciplina> disciplinas = disciplinaRepository.findAllByProfessoresId(id);
 
         for (Disciplina d : disciplinas) {
             d.getProfessores().remove(professor);

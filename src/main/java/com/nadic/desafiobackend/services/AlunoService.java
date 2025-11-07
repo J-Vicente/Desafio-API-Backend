@@ -38,10 +38,10 @@ public class AlunoService {
 
     @Transactional
     public void create(NewAlunoDto newAluno) {
-        Curso curso = cursoRepository.findById(newAluno.getCurso())
+        Curso curso = cursoRepository.findById(newAluno.getCursoId())
                 .orElseThrow(() -> new RuntimeException("Usuário criador não encontrado"));
 
-        List<Disciplina> disciplinas = disciplinaRepository.findAllById(newAluno.getDisciplinas_id());
+        List<Disciplina> disciplinas = disciplinaRepository.findAllById(newAluno.getDisciplinasId());
 
         Aluno aluno = new Aluno();
         aluno.setNome(newAluno.getNome());
@@ -65,14 +65,14 @@ public class AlunoService {
         Aluno aluno = alunoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
-        if (dto.getCurso() != null) {
-            Curso curso = cursoRepository.findById(dto.getCurso())
+        if (dto.getCursoId() != null) {
+            Curso curso = cursoRepository.findById(dto.getCursoId())
                     .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
             aluno.setCurso(curso);
         }
 
-        if (dto.getDisciplinas_id() != null && !dto.getDisciplinas_id().isEmpty()) {
-            List<Disciplina> disciplinas = disciplinaRepository.findAllById(dto.getDisciplinas_id());
+        if (dto.getDisciplinasId() != null && !dto.getDisciplinasId().isEmpty()) {
+            List<Disciplina> disciplinas = disciplinaRepository.findAllById(dto.getDisciplinasId());
             aluno.setDisciplinas(disciplinas);
         }
 

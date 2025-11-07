@@ -1,12 +1,15 @@
 package com.nadic.desafiobackend.dtos.response;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class ApiResponseDto<T> {
         private String status;
         private T data;
         private String message;
 
-        public ApiResponseDto() {
-        }
 
         public ApiResponseDto(String status, T data, String message) {
             this.status = status;
@@ -14,29 +17,6 @@ public class ApiResponseDto<T> {
             this.message = message;
         }
 
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public T getData() {
-            return data;
-        }
-
-        public void setData(T data) {
-            this.data = data;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
 }
 
 

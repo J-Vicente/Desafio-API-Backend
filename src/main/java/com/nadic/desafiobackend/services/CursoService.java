@@ -72,13 +72,13 @@ public class CursoService {
         Curso curso = cursoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
-        List<Aluno> alunos = alunoRepository.findAllByCurso_Id(id);
+        List<Aluno> alunos = alunoRepository.findAllByCursoId(id);
         for (Aluno aluno : alunos) {
             aluno.setCurso(null);
         }
         alunoRepository.saveAll(alunos);
 
-        List<Disciplina> disciplinas = disciplinaRepository.findAllByCurso_Id(id);
+        List<Disciplina> disciplinas = disciplinaRepository.findAllByCursoId(id);
         for (Disciplina disciplina : disciplinas) {
             disciplina.setCurso(null);
         }

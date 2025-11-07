@@ -15,5 +15,5 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
             "OR CAST(a.matricula AS string) LIKE CONCAT('%', :query, '%')")
     List<Aluno> findByQuery(@Param("query") String query);
 
-    List<Aluno> findAllByCurso_Id(Long curso_id);
+    List<Aluno> findAllByCursoId(Long cursoId);
 }

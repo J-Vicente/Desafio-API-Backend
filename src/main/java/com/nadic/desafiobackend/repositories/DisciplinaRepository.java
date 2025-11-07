@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface DisciplinaRepository extends JpaRepository<Disciplina, Long> {
-    List<Disciplina> findAllByProfessores_Id(Long professorId);
+    List<Disciplina> findAllByProfessoresId(Long professorId);
 
-    List<Disciplina> findAllByCurso_Id(Long cursoId);
+    List<Disciplina> findAllByCursoId(Long cursoId);
 
     List<Disciplina> findByCursoId(Long cursoId);
 
