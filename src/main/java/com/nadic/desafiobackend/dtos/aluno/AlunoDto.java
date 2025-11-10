@@ -17,11 +17,4 @@ public class AlunoDto {
     private String curso;
     private List<String> disciplinas;
 
-
-    public AlunoDto(Aluno aluno) {
-        BeanUtils.copyProperties(aluno, this);
-        this.curso = aluno.getCurso().getNome();
-        this.disciplinas = aluno.getDisciplinas().stream().map(Disciplina::getNome).toList();
-    }
-
 }

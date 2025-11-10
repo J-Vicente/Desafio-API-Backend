@@ -13,10 +13,4 @@ public class AlunosAllDto {
     private int matricula;
     private String curso;
 
-
-    public AlunosAllDto(Aluno aluno) {
-        BeanUtils.copyProperties(aluno, this);
-        this.curso = aluno.getCurso().getNome();
-    }
-
 }

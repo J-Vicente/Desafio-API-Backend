@@ -3,6 +3,7 @@ package com.nadic.desafiobackend.services;
 import com.nadic.desafiobackend.dtos.aluno.AlunoDto;
 import com.nadic.desafiobackend.dtos.aluno.AlunosAllDto;
 import com.nadic.desafiobackend.dtos.aluno.NewAlunoDto;
+import com.nadic.desafiobackend.dtos.mappers.AlunoMapper;
 import com.nadic.desafiobackend.entities.Aluno;
 import com.nadic.desafiobackend.entities.Curso;
 import com.nadic.desafiobackend.entities.Disciplina;
@@ -29,24 +30,26 @@ public class AlunoService {
     @Autowired
     private DisciplinaRepository disciplinaRepository;
 
+    @Autowired
+    private AlunoMapper alunoMapper;
+
     @Transactional
     public List<AlunosAllDto> findAll() {
-        List<Aluno> alunos = alunoRepository.findAll();
-        return alunos.stream().map(AlunosAllDto::new).toList();
+        return alunoMapper.toDtoList(alunoRepository.findAll());
     }
 
 
     @Transactional
     public void create(NewAlunoDto newAluno) {
+        Aluno aluno = alunoMapper.toEntity(newAluno);
+
         Curso curso = cursoRepository.findById(newAluno.getCursoId())
                 .orElseThrow(() -> new RuntimeException("Usuário criador não encontrado"));
 
+        aluno.setCurso(curso);
+
         List<Disciplina> disciplinas = disciplinaRepository.findAllById(newAluno.getDisciplinasId());
 
-        Aluno aluno = new Aluno();
-        aluno.setNome(newAluno.getNome());
-        aluno.setMatricula(newAluno.getMatricula());
-        aluno.setCurso(curso);
         aluno.setDisciplinas(disciplinas);
 
         alunoRepository.save(aluno);
@@ -57,13 +60,15 @@ public class AlunoService {
         Aluno aluno = alunoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
-        return new AlunoDto(aluno);
+        return alunoMapper.toDto(aluno);
     }
 
     @Transactional
     public AlunoDto update(Long id, NewAlunoDto dto) {
         Aluno aluno = alunoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+
+        alunoMapper.updateFromDto(dto, aluno);
 
         if (dto.getCursoId() != null) {
             Curso curso = cursoRepository.findById(dto.getCursoId())
@@ -76,15 +81,8 @@ public class AlunoService {
             aluno.setDisciplinas(disciplinas);
         }
 
-        if (dto.getNome() != null && !dto.getNome().isBlank()) {
-            aluno.setNome(dto.getNome());
-        }
 
-        if (dto.getMatricula() != null) {
-            aluno.setMatricula(dto.getMatricula());
-        }
-
-        return new AlunoDto(alunoRepository.save(aluno));
+        return alunoMapper.toDto(alunoRepository.save(aluno));
     }
 
     @Transactional
@@ -92,6 +90,7 @@ public class AlunoService {
         if (!alunoRepository.existsById(id)) {
             throw new RuntimeException("Aluno não encontrado");
         }
+
         alunoRepository.deleteById(id);
     }
 
@@ -99,13 +98,12 @@ public class AlunoService {
     public List<AlunosAllDto> findByCursoId(Long cursoId) {
         Curso curso = cursoRepository.findById(cursoId)
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
-        List<Aluno> alunos = alunoRepository.findByCurso(curso);
-        return alunos.stream().map(AlunosAllDto::new).toList();
+
+        return alunoMapper.toDtoList(alunoRepository.findByCurso(curso));
     }
 
     @Transactional
     public List<AlunosAllDto> search(String query) {
-        List<Aluno> alunos = alunoRepository.findByQuery(query);
-        return alunos.stream().map(AlunosAllDto::new).toList();
+        return alunoMapper.toDtoList(alunoRepository.findByQuery(query));
     }
 }
