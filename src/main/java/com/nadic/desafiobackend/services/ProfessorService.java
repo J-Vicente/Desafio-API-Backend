@@ -1,5 +1,7 @@
 package com.nadic.desafiobackend.services;
 
+import com.nadic.desafiobackend.dtos.mappers.AlunoMapper;
+import com.nadic.desafiobackend.dtos.mappers.ProfessorMapper;
 import com.nadic.desafiobackend.dtos.professor.NewProfessorDto;
 import com.nadic.desafiobackend.dtos.professor.ProfessorDto;
 import com.nadic.desafiobackend.entities.Disciplina;
@@ -21,21 +23,18 @@ public class ProfessorService {
     @Autowired
     private DisciplinaRepository disciplinaRepository;
 
+    @Autowired
+    private ProfessorMapper professorMapper;
+
     @Transactional
     public List<ProfessorDto> findAll() {
-        List<Professor> professores = professorRepository.findAll();
-        return professores.stream().map(ProfessorDto::new).toList();
+        return professorMapper.toDtoList(professorRepository.findAll());
     }
 
 
     @Transactional
     public void create(NewProfessorDto newProfessor) {
-
-        Professor professor = new Professor();
-        professor.setNome(newProfessor.getNome());
-        professor.setMatricula(newProfessor.getMatricula());
-
-        professorRepository.save(professor);
+        professorRepository.save(professorMapper.toEntity(newProfessor));
     }
 
     @Transactional()
@@ -43,7 +42,7 @@ public class ProfessorService {
         Professor professor = professorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
 
-        return new ProfessorDto(professor);
+        return professorMapper.toDto(professor);
     }
 
     @Transactional
@@ -51,15 +50,9 @@ public class ProfessorService {
         Professor professor = professorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
 
-        if (dto.getNome() != null && !dto.getNome().isBlank()) {
-            professor.setNome(dto.getNome());
-        }
+        professorMapper.updateFromDto(dto, professor);
 
-        if (dto.getMatricula() != null) {
-            professor.setMatricula(dto.getMatricula());
-        }
-
-        return new ProfessorDto(professorRepository.save(professor));
+        return professorMapper.toDto(professorRepository.save(professor));
     }
 
     @Transactional
@@ -83,13 +76,12 @@ public class ProfessorService {
     public List<ProfessorDto> findByDisciplinaId(Long disciplinaId) {
         Disciplina disciplina = disciplinaRepository.findById(disciplinaId)
                 .orElseThrow(() -> new RuntimeException("Disciplina não encontrado"));
-        List<Professor> professores = disciplina.getProfessores();
-        return professores.stream().map(ProfessorDto::new).toList();
+
+        return professorMapper.toDtoList(disciplina.getProfessores());
     }
 
     @Transactional
     public List<ProfessorDto> findByNome(String query) {
-        List<Professor> professores = professorRepository.findByNomeContainingIgnoreCase(query);
-        return professores.stream().map(ProfessorDto::new).toList();
+        return professorMapper.toDtoList(professorRepository.findByNomeContainingIgnoreCase(query));
     }
 }
