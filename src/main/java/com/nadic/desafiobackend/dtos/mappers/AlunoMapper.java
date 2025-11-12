@@ -9,7 +9,7 @@ import com.nadic.desafiobackend.entities.Disciplina;
 import org.mapstruct.*;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AlunoMapper {
 
     List<AlunosAllDto> toDtoList(List<Aluno> alunos);
