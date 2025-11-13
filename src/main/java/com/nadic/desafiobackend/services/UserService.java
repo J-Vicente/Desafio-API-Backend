@@ -2,6 +2,7 @@ package com.nadic.desafiobackend.services;
 
 import com.nadic.desafiobackend.auth.JwtUtil;
 import com.nadic.desafiobackend.dtos.auth.UserDto;
+import com.nadic.desafiobackend.dtos.mappers.UserMapper;
 import com.nadic.desafiobackend.entities.User;
 import com.nadic.desafiobackend.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -16,6 +17,9 @@ public class UserService {
     @Autowired
     private JwtUtil JwtUtil;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Transactional
     public void register(UserDto dto) {
 
@@ -23,9 +27,7 @@ public class UserService {
             throw new RuntimeException("Username já cadastrado");
         });
 
-        User user = new User(dto.getUsername(), dto.getPassword());
-
-        userRepository.save(user);
+        userRepository.save(userMapper.toEntity(dto));
     }
 
     public String login(UserDto dto) {
