@@ -11,10 +11,4 @@ public class CursoDto {
     private Long id;
     private String nome;
     private String codigo;
-
-
-    public CursoDto(Curso curso) {
-        BeanUtils.copyProperties(curso,this);
-    }
-
 }

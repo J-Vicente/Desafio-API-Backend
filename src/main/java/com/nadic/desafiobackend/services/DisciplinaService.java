@@ -3,6 +3,7 @@ package com.nadic.desafiobackend.services;
 import com.nadic.desafiobackend.dtos.disciplina.DisciplinaAllDto;
 import com.nadic.desafiobackend.dtos.disciplina.DisciplinaDto;
 import com.nadic.desafiobackend.dtos.disciplina.NewDisciplinaDto;
+import com.nadic.desafiobackend.dtos.mappers.DisciplinaMapper;
 import com.nadic.desafiobackend.entities.Aluno;
 import com.nadic.desafiobackend.entities.Curso;
 import com.nadic.desafiobackend.entities.Disciplina;
@@ -31,12 +32,13 @@ public class DisciplinaService {
     @Autowired
     private ProfessorRepository professorRepository;
 
+    @Autowired
+    private DisciplinaMapper disciplinaMapper;
+
     @Transactional
     public List<DisciplinaAllDto> findAll() {
-        List<Disciplina> disciplinas = disciplinaRepository.findAll();
-        return disciplinas.stream().map(DisciplinaAllDto::new).toList();
+        return disciplinaMapper.toDtoList(disciplinaRepository.findAll());
     }
-
 
     @Transactional
     public void create(NewDisciplinaDto newDisciplina) {
@@ -47,9 +49,7 @@ public class DisciplinaService {
 
         List<Aluno> alunos = alunoRepository.findAllById(newDisciplina.getAlunos());
 
-        Disciplina disciplina = new Disciplina();
-        disciplina.setNome(newDisciplina.getNome());
-        disciplina.setCodigo(newDisciplina.getCodigo());
+        Disciplina disciplina = disciplinaMapper.toEntity(newDisciplina);
         disciplina.setCurso(curso);
         disciplina.setProfessores(professores);
         disciplina.setAlunos(alunos);
@@ -68,7 +68,7 @@ public class DisciplinaService {
         Disciplina disciplina = disciplinaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Disciplina não encontrada"));
 
-        return new DisciplinaDto(disciplina);
+        return disciplinaMapper.toDto(disciplina);
     }
 
     @Transactional
@@ -76,13 +76,7 @@ public class DisciplinaService {
         Disciplina disciplina = disciplinaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Disciplina não encontrada"));
 
-        if (dto.getNome() != null && !dto.getNome().isBlank()) {
-            disciplina.setNome(dto.getNome());
-        }
-
-        if (dto.getCodigo() != null) {
-            disciplina.setCodigo(dto.getCodigo());
-        }
+        disciplinaMapper.updateFromDto(dto, disciplina);
 
         if (dto.getCursoId() != null) {
             Curso curso = cursoRepository.findById(dto.getCursoId())
@@ -103,7 +97,7 @@ public class DisciplinaService {
             disciplina.setAlunos(alunos);
         }
 
-        return new DisciplinaDto(disciplinaRepository.save(disciplina));
+        return disciplinaMapper.toDto(disciplinaRepository.save(disciplina));
     }
 
     @Transactional
@@ -131,7 +125,6 @@ public class DisciplinaService {
 
     @Transactional
     public List<DisciplinaAllDto> findByCursoId(Long cursoId) {
-        List<Disciplina> disciplinas = disciplinaRepository.findByCursoId(cursoId);
-        return disciplinas.stream().map(DisciplinaAllDto::new).toList();
+        return disciplinaMapper.toDtoList(disciplinaRepository.findByCursoId(cursoId));
     }
 }

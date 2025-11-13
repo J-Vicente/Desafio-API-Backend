@@ -10,16 +10,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class NewDisciplinaDto {
-    private Long id;
     private String nome;
     private String codigo;
     private Long cursoId;
     private List<Long> professores;
     private List<Long> alunos;
-
-
-    public NewDisciplinaDto(Disciplina disciplina) {
-        BeanUtils.copyProperties(disciplina, this);
-    }
 
 }

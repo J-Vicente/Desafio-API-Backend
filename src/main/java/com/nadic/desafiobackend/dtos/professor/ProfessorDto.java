@@ -12,10 +12,4 @@ public class ProfessorDto {
     private String nome;
     private int matricula;
 
-
-    public ProfessorDto(Professor professor) {
-        BeanUtils.copyProperties(professor, this);
-    }
-
-
 }

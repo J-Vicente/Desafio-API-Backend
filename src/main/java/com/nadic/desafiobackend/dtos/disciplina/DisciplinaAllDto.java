@@ -13,11 +13,4 @@ public class DisciplinaAllDto {
     private String codigo;
     private Long cursoId;
 
-
-    public DisciplinaAllDto(Disciplina disciplina) {
-        BeanUtils.copyProperties(disciplina, this);
-        this.cursoId =  disciplina.getCurso().getId();
-    }
-
-
 }

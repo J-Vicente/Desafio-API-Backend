@@ -11,9 +11,4 @@ public class NewCursoDto {
     private String nome;
     private String codigo;
 
-
-    public NewCursoDto(Curso curso) {
-        BeanUtils.copyProperties(curso, this);
-    }
-
 }
