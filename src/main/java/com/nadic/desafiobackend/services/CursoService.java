@@ -2,6 +2,7 @@ package com.nadic.desafiobackend.services;
 
 import com.nadic.desafiobackend.dtos.curso.CursoDto;
 import com.nadic.desafiobackend.dtos.curso.NewCursoDto;
+import com.nadic.desafiobackend.dtos.mappers.CursoMapper;
 import com.nadic.desafiobackend.entities.Aluno;
 import com.nadic.desafiobackend.entities.Curso;
 import com.nadic.desafiobackend.entities.Disciplina;
@@ -26,21 +27,17 @@ public class CursoService {
     @Autowired
     private AlunoRepository alunoRepository;
 
+    @Autowired
+    private CursoMapper cursoMapper;
+
     @Transactional
     public List<CursoDto> findAll() {
-        List<Curso> cursos = cursoRepository.findAll();
-        return cursos.stream().map(CursoDto::new).toList();
+        return cursoMapper.toDtoList(cursoRepository.findAll());
     }
-
 
     @Transactional
     public void create(NewCursoDto newCurso) {
-
-        Curso curso = new Curso();
-        curso.setNome(newCurso.getNome());
-        curso.setCodigo(newCurso.getCodigo());
-
-        cursoRepository.save(curso);
+        cursoRepository.save(cursoMapper.toEntity(newCurso));
     }
 
     @Transactional()
@@ -48,7 +45,7 @@ public class CursoService {
         Curso curso = cursoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
-        return new CursoDto(curso);
+        return cursoMapper.toDto(curso);
     }
 
     @Transactional
@@ -56,15 +53,9 @@ public class CursoService {
         Curso curso = cursoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
-        if (dto.getNome() != null && !dto.getNome().isBlank()) {
-            curso.setNome(dto.getNome());
-        }
+        cursoMapper.updateFromDto(dto, curso);
 
-        if (dto.getCodigo() != null) {
-            curso.setCodigo(dto.getCodigo());
-        }
-
-        return new CursoDto(cursoRepository.save(curso));
+        return cursoMapper.toDto(cursoRepository.save(curso));
     }
 
     @Transactional
@@ -87,10 +78,8 @@ public class CursoService {
         cursoRepository.delete(curso);
     }
 
-
     @Transactional
     public List<CursoDto> findByNome(String query) {
-        List<Curso> curso = cursoRepository.findByNomeContainingIgnoreCase(query);
-        return curso.stream().map(CursoDto::new).toList();
+        return cursoMapper.toDtoList(cursoRepository.findByNomeContainingIgnoreCase(query));
     }
 }
