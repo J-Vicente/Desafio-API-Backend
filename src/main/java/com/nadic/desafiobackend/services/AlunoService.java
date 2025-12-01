@@ -44,7 +44,7 @@ public class AlunoService {
         Aluno aluno = alunoMapper.toEntity(newAluno);
 
         Curso curso = cursoRepository.findById(newAluno.getCursoId())
-                .orElseThrow(() -> new RuntimeException("Usuário criador não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
 
         aluno.setCurso(curso);
 
