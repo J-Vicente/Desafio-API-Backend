@@ -20,6 +20,7 @@ Este é um sistema de gerenciamento escolar desenvolvido com Spring Boot, que of
 - Swagger/OpenAPI para documentação
 - Maven
 - SQL Database (via JPA)
+- Flyway para migrations
 
 ## Estrutura do Projeto
 O projeto segue uma arquitetura em camadas:
@@ -33,15 +34,16 @@ src/
 │   │       ├── config/       # Configurações do Swagger
 │   │       ├── controllers/  # Controladores REST
 │   │       ├── dtos/        # Objetos de Transferência de Dados
+│   │       │   └── mappers  #Mapeamento entidade <-> dto
 │   │       ├── entities/    # Entidades JPA
 │   │       ├── exceptions/  # Tratamento de exceções
 │   │       ├── repositories/# Repositórios JPA
 │   │       └── services/    # Camada de serviços
 │   └── resources/
+        ├── db.migration # Migrations Flyway
 │       ├── application.properties
 │       ├── application-dev.properties
 │       ├── application-test.properties
-│       └── data.sql
 ```
 
 ## Documentação
